@@ -13,7 +13,7 @@
             <Font name="Rockwell" size="13.0" />
          </font>
       </Button>
-      <Button layoutX="410.0" layoutY="342.0" mnemonicParsing="false" text="QUIT">
+      <Button onAction="#QuitGame" layoutX="410.0" layoutY="342.0" mnemonicParsing="false" text="QUIT">
          <font>
             <Font name="Rockwell" size="13.0" />
          </font>
@@ -23,6 +23,6 @@
             <Font name="Rockwell" size="29.0" />
          </font>
       </Label>
-      <ChoiceBox layoutX="45.0" layoutY="136.0" prefWidth="150.0" />
+      <ChoiceBox layoutX="45.0" layoutY="136.0" prefWidth="150.0" fx:id="difficultyChoiceBox" />
    </children>
 </AnchorPane>
