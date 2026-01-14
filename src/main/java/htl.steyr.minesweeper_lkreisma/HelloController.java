@@ -1,14 +1,26 @@
 package htl.steyr.minesweeper_lkreisma;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+import javafx.scene.control.ChoiceBox;
 
-public class HelloController {
-    @FXML
-    private Label welcomeText;
+
+public class HelloController{
 
     @FXML
-    protected void onHelloButtonClick() {
-        welcomeText.setText("Welcome to JavaFX Application!");
+    private ChoiceBox<String> difficultyChoiceBox;
+
+    public ChoiceBox<String> getDifficultyChoiceBox(){
+        return this.difficultyChoiceBox;
     }
+
+    public void initialize(){
+       getDifficultyChoiceBox().getItems().addAll("Anfänger","Fortgeschritten","Profi");
+    }
+    public void createGameStart(ActionEvent actionEvent) {
+        Field field = new Field(difficultyChoiceBox);
+        field.createGameField(actionEvent);
+    }
+
+
 }
