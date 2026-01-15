@@ -1,17 +1,16 @@
 package htl.steyr.minesweeper_lkreisma;
 
-import javafx.beans.property.ReadOnlySetProperty;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Field extends HelloController {
@@ -24,11 +23,6 @@ public class Field extends HelloController {
 
     public Field(ChoiceBox difficulty) {
         this.difficulty = difficulty.getValue().toString();
-        initialize();
-    }
-
-    @FXML
-    public void initialize() {
         reset.setOnAction(e -> {
             ((Stage) ((Node) e.getSource()).getScene().getWindow()).close();
         });
@@ -40,6 +34,8 @@ public class Field extends HelloController {
         AnchorPane root = new AnchorPane();
         Scene scene = new Scene(root);
         stage.setScene(scene);
+        root.getChildren().add(reset);
+
 
         switch (this.difficulty) {
             case "Anfänger" -> root.getChildren().add(createGrid(8, 8, 10));
@@ -49,7 +45,6 @@ public class Field extends HelloController {
             default -> throw new IllegalStateException("Unexpected value: " + this.difficulty);
         }
 
-        //root.getChildren().add(reset);
 
         stage.show();
 
@@ -60,12 +55,13 @@ public class Field extends HelloController {
 
 
         gamegrid = new GridPane();
+        gamegrid.setLayoutY(70);
         for (int rowIndex = 0; rowIndex < rows; rowIndex++) {
-            //an array to hold buttons of one row
             Node[] nodes = new Node[column];
             for (int colIndex = 0; colIndex < column; colIndex++) {
                 Button node = new Button(rowIndex + "" + colIndex);
-                node.setOnAction(e -> buttonsaidsomething(node)); //add action listener
+                node.setPrefSize(40, 40);
+                node.setOnMouseClicked(this::markButton);
                 nodes[colIndex] = node;
             }
 
@@ -75,12 +71,6 @@ public class Field extends HelloController {
             setBomb(gamegrid);
         }
         return gamegrid;
-    }
-
-    public void buttonsaidsomething(Button button) {
-        System.out.println(GridPane.getRowIndex(button) + " : " + GridPane.getColumnIndex(button) + "-" + button.getId());
-
-
     }
 
     public void setBomb(GridPane grid) {
@@ -95,14 +85,37 @@ public class Field extends HelloController {
 
             // 3. Add the new button
             Button button = new Button("bomb");
+            button.setPrefSize(40, 40);
             button.setId("bomb");
-            button.setOnAction(e -> buttonsaidsomething(button));
+            button.setOnMouseClicked(this::markButton);
             grid.add(button, COL, ROW);
-        }else {
+        } else {
             setBomb(grid);
         }
 
 
     }
 
+
+    public void markButton(MouseEvent event) {
+        if( event.getButton() == MouseButton.PRIMARY) {
+            if("bomb".equals(((Button) event.getSource()).getId())) {
+                System.out.println("BOOM! Game Over!");
+                // Disable all buttons
+                for (Node node : gamegrid.getChildren()) {          //Disables every button after bomb was clicked
+                    node.setDisable(true);
+                }
+                return;
+            }
+            ((Button) event.getSource()).setDisable(true);
+        } else if( event.getButton() == MouseButton.SECONDARY) {    //Setting the Flags
+            ((Button) event.getSource()).setText("F"); // ((Button) event.getSource()) = the button that was clicked
+        }
+
+    }
+
+
+    public void openCell(){
+
+    }
 }

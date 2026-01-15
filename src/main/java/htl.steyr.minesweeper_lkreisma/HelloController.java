@@ -2,7 +2,9 @@ package htl.steyr.minesweeper_lkreisma;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.ChoiceBox;
+import javafx.stage.Stage;
 
 
 public class HelloController{
@@ -23,4 +25,7 @@ public class HelloController{
     }
 
 
+    public void quitGame(ActionEvent actionEvent) {
+        ((Stage) ((Node) actionEvent.getSource()).getScene().getWindow()).close();
+    }
 }
