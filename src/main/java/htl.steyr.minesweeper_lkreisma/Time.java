@@ -1,9 +1,5 @@
 package htl.steyr.minesweeper_lkreisma;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.scene.control.Label;
-import javafx.util.Duration;
 
 public class Time {
 

@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Field extends HelloController {
@@ -24,6 +25,10 @@ public class Field extends HelloController {
 
     private final Stage stage = new Stage();
     private final GridPane gamegrid = new GridPane();
+    private AnchorPane root = new AnchorPane();
+    Scene scene = new Scene(root);
+
+
 
 
     private Label mineCounterLabel = new Label("-Mines-");
@@ -32,20 +37,52 @@ public class Field extends HelloController {
     private boolean isrecursiveCall = false;
 
 
-    Button reset = new Button("-RESET-");
+    private Button reset = new Button("-RESET-");
 
     private final String difficulty;
+    private final Label winnerLabel = new Label("You won!");
 
-    Time time = new Time();
-    private Label timeLabel = new Label("000");
+    private int seconds = 0;
+
+
+    public String getSeconds() {
+
+        if(this.seconds > 9){
+            if(this.seconds > 99){
+                return String.valueOf(this.seconds);
+            }else{
+                return "0" + this.seconds;
+            }
+        }else{
+            return "00" + this.seconds;
+        }
+    }
+
+    private Label timeLabel = new Label();
 
     private Timeline timeline = new Timeline(
             new KeyFrame(Duration.seconds(1), event -> {
-                time.oneSecondPassed();
-                timeLabel.setText(time.getSeconds());
+                oneSecondPassed();
+                timeLabel.setText(String.valueOf(getSeconds()));
             }));
 
+
+
     public Field(ChoiceBox difficulty) {
+        gamegrid.setId("gamegrid");
+        root.setId("root");
+        root.setLayoutX(gamegrid.getPrefWidth());
+
+        mineCounterLabel.setId("mineCounterLabel");
+        timeLabel.setId("timeLabel");
+        reset.setId("resetButton");
+        winnerLabel.setId("winnerLabel");
+
+        winnerLabel.setVisible(false);
+
+        scene.getStylesheets().add(Objects.requireNonNull(Field.class.getResource("stylesheets/Field.css")).toExternalForm());
+
+
         this.difficulty = difficulty.getValue().toString();
 
         reset.setOnAction(event -> {
@@ -57,22 +94,45 @@ public class Field extends HelloController {
         });
 
 
-        mineCounterLabel.setText("Mines: " + mineCounter);
-        mineCounterLabel.setLayoutX(100);
 
-        timeLabel.setText(String.valueOf(time));
+        mineCounterLabel.setText("Mines: " + mineCounter);
+
+
+        timeLabel.setText(String.valueOf(getSeconds()));
+
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
+
+
+        reset.setLayoutX(10);
+        reset.setLayoutY(10);
+
+        timeLabel.setLayoutX(130);
+        timeLabel.setLayoutY(15);
+
+        mineCounterLabel.setLayoutX(250);
+        mineCounterLabel.setLayoutY(15);
+
+
+        AnchorPane.setRightAnchor(gamegrid, 0.0);
+        AnchorPane.setLeftAnchor(gamegrid, 0.0);
+        AnchorPane.setBottomAnchor(gamegrid, 0.0);
+        AnchorPane.setTopAnchor(gamegrid, 70.0);
+
+
+
+
     }
+
+
 
     public void createGameField(ActionEvent actionevent) {
         ((Stage) ((Node) actionevent.getSource()).getScene().getWindow()).close();
         //System.out.println(this.difficulty);
 
-        AnchorPane root = new AnchorPane();
-        Scene scene = new Scene(root);
         stage.setScene(scene);
-        root.getChildren().addAll(reset, timeLabel, mineCounterLabel);
+        root.getChildren().addAll(reset, timeLabel, mineCounterLabel, winnerLabel);
+        stage.setResizable(false);
 
 
         switch (this.difficulty) {
@@ -82,6 +142,8 @@ public class Field extends HelloController {
             case "Profi" -> root.getChildren().add(createGrid(16, 30, 99));
             default -> throw new IllegalStateException("Unexpected value: " + this.difficulty);
         }
+
+
 
 
         stage.show();
@@ -99,7 +161,7 @@ public class Field extends HelloController {
     protected GridPane createGrid(int rows, int column, int mines) {
         mineCounter = mines;
         mineCounterLabel.setText("Mines: " + mineCounter);
-        CellsToOpened = rows*column - mines;
+        CellsToOpened = rows * column - mines;
 
 
 
@@ -107,7 +169,8 @@ public class Field extends HelloController {
         for (int rowIndex = 0; rowIndex < rows; rowIndex++) {
             Node[] nodes = new Node[column];
             for (int colIndex = 0; colIndex < column; colIndex++) {
-                Button node = new Button("[  ]");
+                Button node = new Button(" ");
+                node.setId("cell");
                 node.setPrefSize(40, 40);
                 node.setOnMouseClicked(this::markButton);
                 nodes[colIndex] = node;
@@ -118,6 +181,8 @@ public class Field extends HelloController {
         for (int i = 0; i < mines; ++i) {
             setBomb(gamegrid);
         }
+
+
         return gamegrid;
     }
 
@@ -125,14 +190,14 @@ public class Field extends HelloController {
         int ROW = ThreadLocalRandom.current().nextInt(0, grid.getRowCount());
         int COL = ThreadLocalRandom.current().nextInt(0, grid.getColumnCount());
 
-        System.out.println(i+" - "+ROW + " : " + COL);
+        System.out.println(i + " - " + ROW + " : " + COL);
 
         if (grid.getChildren().removeIf(node ->
                 (GridPane.getRowIndex(node) == ROW) && (GridPane.getColumnIndex(node) == COL && !"bomb".equals(node.getId()))
         )) {
             ++this.i;
             // 3. Add the new button
-            Button button = new Button("[ # ]");
+            Button button = new Button(" ");
             button.setPrefSize(40, 40);
             button.setId("bomb");
             button.setOnMouseClicked(this::markButton);
@@ -146,30 +211,36 @@ public class Field extends HelloController {
 
 
     public void markButton(MouseEvent event) {
-        if( event.getButton() == MouseButton.PRIMARY) {
-            if("bomb".equals(((Button) event.getSource()).getId())) {
+        if (event.getButton() == MouseButton.PRIMARY) {
+            if ("bomb".equals(((Button) event.getSource()).getId())) {
                 System.out.println("BOOM! Game Over!");
                 // Disable all buttons
 
                 timeline.stop();
-                for (Node node : gamegrid.getChildren()) {          //Disables every button after bomb was clicked
-                    node.setDisable(true);
+                for (Node node : gamegrid.getChildren()) {
+                    if("bomb".equals(node.getId())){
+                        ((Button) node).setText("💣");
+                    }
+                    node.setDisable(true); //Disables every button after bomb was clicked
                 }
                 return;
-            }else{
+            } else {
 
                 System.out.println("Opens Cell markButton(): " + CellsToOpened);
-                isrecursiveCall=false;
+                isrecursiveCall = false;
                 openCell(((Button) event.getSource()));
             }
             ((Button) event.getSource()).setDisable(true);
-        } else if( event.getButton() == MouseButton.SECONDARY) {//Setting the Flags
-            if("🚩".equals(((Button) event.getSource()).getText())){
-                ((Button) event.getSource()).setText("[  ]");
+        } else if (event.getButton() == MouseButton.SECONDARY) {//Setting the Flags
+            if ("🚩".equals(((Button) event.getSource()).getText())) {
+                ((Button) event.getSource()).setText("");
                 ++mineCounter;
-            }else {
+                ((Button) event.getSource()).getStyleClass().add("cell");
+
+            } else {
                 ((Button) event.getSource()).setText("🚩"); // ((Button) event.getSource()) = the button that was clicked
                 --mineCounter;
+                ((Button) event.getSource()).getStyleClass().add("flagged");
             }
             mineCounterLabel.setText("Mines: " + mineCounter);
         }
@@ -177,20 +248,27 @@ public class Field extends HelloController {
     }
 
 
-    public void openCell(Button eventbutton){
+    public void openCell(Button eventbutton) {
 
 
         if (CellsToOpened == 0) {
-            System.out.println("Congratulations! You've cleared the minefield!");
             timeline.stop();
-            for (Node node : gamegrid.getChildren()) {          //Disables every button after winning
-                node.setDisable(true);
+            winnerLabel.setVisible(true);
+            System.out.println("Congratulations! You've cleared the minefield!");
+
+            for (Node node : gamegrid.getChildren()) {
+                if("bomb".equals(node.getId())){
+                    ((Button) node).setText("💣");
+                }
+
+                node.setDisable(true);//Disables every button after winning
+
             }
             return;
         }
 
         Button button = eventbutton;
-        for(Node node : gamegrid.getChildren()) {
+        for (Node node : gamegrid.getChildren()) {
             if ((GridPane.getRowIndex(node).equals(GridPane.getRowIndex(button))) &&
                     (GridPane.getColumnIndex(node).equals(GridPane.getColumnIndex(button)))) {
                 int bombCount = 0;
@@ -210,16 +288,14 @@ public class Field extends HelloController {
                 }
 
 
-
-
                 if (bombCount > 0) {
                     button.setText(String.valueOf(bombCount));
 
-                    if(!isrecursiveCall) {
+                    if (!isrecursiveCall) { // to avoid opening a cell twice in a recursive call
                         --CellsToOpened;
                         System.out.println("1Opens Cell openCell(): " + CellsToOpened + "--" + GridPane.getRowIndex(button) + "*" + GridPane.getColumnIndex(button));
                     }
-                    isrecursiveCall=true;
+                    isrecursiveCall = true;
                     if (CellsToOpened == 0) {
                         openCell(button);
 
@@ -245,7 +321,7 @@ public class Field extends HelloController {
                                             && !"bomb".equals(adjacentNode.getId())) {
                                         adjacentNode.setDisable(true); // markieren bevor rekursiv aufgerufen wird
                                         --CellsToOpened;
-                                        System.out.println("2Opens Cell openCell(): " + CellsToOpened +"--"+ GridPane.getRowIndex(adjacentNode)+"*"+ GridPane.getColumnIndex(adjacentNode));
+                                        System.out.println("2Opens Cell openCell(): " + CellsToOpened + "--" + GridPane.getRowIndex(adjacentNode) + "*" + GridPane.getColumnIndex(adjacentNode));
                                         isrecursiveCall = true;
                                         openCell((Button) adjacentNode);
                                     }
@@ -258,6 +334,10 @@ public class Field extends HelloController {
                 }
             }
         }
+    }
+
+    public void oneSecondPassed(){
+        this.seconds++;
     }
 
 }
