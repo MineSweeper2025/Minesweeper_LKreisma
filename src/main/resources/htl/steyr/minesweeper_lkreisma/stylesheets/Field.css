@@ -1,28 +1,27 @@
 
-
 #root {
-    -fx-background-color: #2b2f38;
+    -fx-background-color: linear-gradient(to bottom right, rgba(183, 44, 44, 0.85), rgba(9, 9, 9, 0.9));
     -fx-padding: 15px;
 }
 
 
-
 #gamegrid {
-    -fx-hgap: 3px;
-    -fx-vgap: 3px;
+    -fx-hgap: 2px;
+    -fx-vgap: 2px;
     -fx-padding: 10px;
+
+    -fx-effect: dropshadow(gaussian, rgba(24, 24, 24, 0.6), 18, 0.45, 0.4, 0.6);
+
 
 }
 
 #cell, #bomb {
-    -fx-background-color: linear-gradient(#cfd8dc, #b0bec5);
-    -fx-border-color: #546e7a;
-    -fx-border-width: 1px;
+    -fx-background-color: linear-gradient(#6b767c, #91acb9);
+    -fx-effect: dropshadow(gaussian, rgba(24, 24, 24, 0.6), 8, 0.3, 0, 0);
     -fx-font-size: 16px;
     -fx-font-weight: bold;
     -fx-text-fill: #000000;
     -fx-cursor: hand;
-    -fx-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 
 }
 
@@ -35,22 +34,18 @@
 }
 
 
-
 #cell:disabled {
-    -fx-background-color: #eceff1;
-    -fx-text-fill: #37474f;
-    -fx-opacity: 1.0;
-}
-
-
-
-
-#bomb:disabled {
-    -fx-background-color: linear-gradient(#fae5e5, #f32525);
+    -fx-background-color: linear-gradient(to bottom right, #73867f, #9fc4a0);
     -fx-text-fill: #000000;
     -fx-opacity: 1.0;
 }
 
+
+#bomb:disabled {
+    -fx-background-color: linear-gradient(#3d3737, #f32525);
+    -fx-text-fill: #000000;
+    -fx-opacity: 1.0;
+}
 
 
 #resetButton {
@@ -67,13 +62,11 @@
 #resetButton:hover {
     -fx-background-color: linear-gradient(#ffd54f, #ff9800);
     -fx-cursor: hand;
-    -fx-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 #resetButton:pressed {
     -fx-background-color: #ef6c00;
 }
-
 
 
 #mineCounterLabel {
@@ -89,14 +82,44 @@
 }
 
 #winnerLabel {
-    -fx-font-size: 50px, bold;
+    -fx-font-size: 25px;
+    -fx-font-weight: 800;
+    -fx-content-display: cener;
 
-    -fx-text-fill: #00d5ff;
-    -fx-effect: dropshadow(gaussian, rgba(0,210,255,0.95), 22, 0.55, 0, 0);
+    -fx-text-fill: #070e10;
+    -fx-effect: dropshadow(gaussian, rgba(0, 210, 255, 0.95), 22, 0.75, 0, 0);
 }
-
 
 
 .button {
     -fx-alignment: center;
+}
+
+.root #header {
+    -fx-spacing: 70;
+    -fx-alignment: center;
+    -fx-padding: 10 0 10 0;
+}
+
+.root #gamegrid .cell-flagged {
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-background-color: linear-gradient(to bottom left, #252423, #9a9894);
+}
+
+.root #gamegrid .cell-flagged:hover {
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-background-color: linear-gradient(to bottom left, #283b3b, #67a196);
+}
+
+
+.root .header-label {
+    -fx-background-color: black;
+    -fx-background-radius: 3;
+    -fx-alignment: center;
+    -fx-content-display: center;
+    -fx-padding: 0 5 0 5;
+    -fx-border-width: 2 2 2 2;
+    -fx-border-color: #939695;
 }

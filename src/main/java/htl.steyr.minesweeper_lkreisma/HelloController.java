@@ -3,11 +3,17 @@ package htl.steyr.minesweeper_lkreisma;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 
 public class HelloController{
+
+    public AnchorPane settingsAnchorpane;
+    public Button quitgame;
+    public Button newGameButton;
 
     @FXML
     private ChoiceBox<String> difficultyChoiceBox;
@@ -17,9 +23,16 @@ public class HelloController{
     }
 
     public void initialize(){
+        quitgame.getStyleClass().add("button-style");
+        newGameButton.getStyleClass().add("button-style");
+
+
+        settingsAnchorpane.setId("settings-anchorpane");
+        getDifficultyChoiceBox().getStyleClass().add("choice-box-styled");
+        getDifficultyChoiceBox().setValue("Anfänger");
        getDifficultyChoiceBox().getItems().addAll("Anfänger","Fortgeschritten","Profi");
     }
-    public void createGameStart(ActionEvent actionEvent) {
+    public void createnewGame(ActionEvent actionEvent) {
         Field field = new Field(difficultyChoiceBox);
         field.createGameField(actionEvent);
     }
