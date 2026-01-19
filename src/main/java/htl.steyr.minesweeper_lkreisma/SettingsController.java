@@ -5,15 +5,17 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 
-public class HelloController{
+public class SettingsController {
 
     public AnchorPane settingsAnchorpane;
     public Button quitgame;
     public Button newGameButton;
+    public Label minesweeper_Label;
 
     @FXML
     private ChoiceBox<String> difficultyChoiceBox;
@@ -23,6 +25,7 @@ public class HelloController{
     }
 
     public void initialize(){
+        minesweeper_Label.getStyleClass().add("Minesweeper-Label-style");
         quitgame.getStyleClass().add("button-style");
         newGameButton.getStyleClass().add("button-style");
 

@@ -1,6 +1,15 @@
 #settings-anchorpane {
     -fx-background-color: linear-gradient(to bottom right, rgba(98, 183, 44, 0.85), rgba(16, 16, 16, 0.9));
     -fx-padding: 15px;
+
+}
+
+#settings-anchorpane .Minesweeper-Label-style {
+    -fx-font-family: "Segoe UI", "Arial", sans-serif;
+    -fx-font-size: 36px;
+    -fx-text-fill: #fff176;
+    -fx-font-weight: 800;
+    -fx-effect: dropshadow(gaussian, rgba(24, 24, 24, 0.8), 8, 0.3, 0, 0);
 }
 #settings-anchorpane .choice-box-styled {
 

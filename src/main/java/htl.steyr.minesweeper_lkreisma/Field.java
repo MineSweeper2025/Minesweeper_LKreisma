@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class Field extends HelloController {
+public class Field extends SettingsController {
 
 
     //variables for creating the Game Field
@@ -61,7 +61,7 @@ public class Field extends HelloController {
     /**
      * Constructor for every Value/Object that needs to be initialized + setting ids for CSS
      *
-     * @param difficulty - ChoiceBox from the HelloController (to get the chosen difficulty)
+     * @param difficulty - ChoiceBox from the SettingsController (to get the chosen difficulty)
      */
     public Field(ChoiceBox difficulty) {
 
@@ -136,7 +136,7 @@ public class Field extends HelloController {
 
     /**
      * @description:
-     *      first thing (after the constructor) that gets called from the HelloController.createnewGame()-method
+     *      first thing (after the constructor) that gets called from the SettingsController.createnewGame()-method
      *      the stage and scene get set
      *      the gamegrid gets created depending on the difficulty chosen
      *      stage.show() - shows  the game-window
@@ -168,12 +168,12 @@ public class Field extends HelloController {
 
     /**
      * @param actionevent - for getting the source of the event (Window from reset-button)
-     * @throws IOException - if something goes wrong with loading the HelloApplication
+     * @throws IOException - if something goes wrong with loading the StartApplication
      */
     public void resetGame(ActionEvent actionevent) throws IOException {
         ((Stage) ((Node) actionevent.getSource()).getScene().getWindow()).close();
 
-        HelloApplication application = new HelloApplication();
+        StartApplication application = new StartApplication();
         application.start(new Stage());
     }
 

@@ -5,11 +5,9 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="settingsAnchorpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="233.0" prefWidth="404.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="htl.steyr.minesweeper_lkreisma.HelloController">
-   <children>
-      <ChoiceBox fx:id="difficultyChoiceBox" layoutX="32.0" layoutY="118.0" prefWidth="150.0" />
-      <Button fx:id="newGameButton" layoutX="268.0" layoutY="93.0" mnemonicParsing="false" onAction="#createnewGame" text="-START GAME-" />
-      <Button fx:id="quitgame" layoutX="292.0" layoutY="141.0" mnemonicParsing="false" onAction="#quitGame" text="-Quit-" />
-      <Label layoutX="163.0" layoutY="33.0" text="-MINESWEEPER-" />
-   </children>
+<AnchorPane fx:id="settingsAnchorpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="233.0" prefWidth="404.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="htl.steyr.minesweeper_lkreisma.SettingsController">
+    <ChoiceBox fx:id="difficultyChoiceBox" layoutX="25.0" layoutY="106.0" prefWidth="150.0" />
+    <Button fx:id="newGameButton" layoutX="268.0" layoutY="93.0" mnemonicParsing="false" onAction="#createnewGame" text="-START GAME-" />
+    <Button fx:id="quitgame" layoutX="292.0" layoutY="141.0" mnemonicParsing="false" onAction="#quitGame" text="-Quit-" />
+    <Label fx:id="minesweeper_Label" layoutX="58.0" layoutY="29.0" text="-MINESWEEPER-" />
 </AnchorPane>
