@@ -84,7 +84,6 @@
 #winnerLabel {
     -fx-font-size: 25px;
     -fx-font-weight: 800;
-    -fx-content-display: cener;
 
     -fx-text-fill: #070e10;
     -fx-effect: dropshadow(gaussian, rgba(0, 210, 255, 0.95), 22, 0.75, 0, 0);
@@ -117,8 +116,6 @@
 .root .header-label {
     -fx-background-color: black;
     -fx-background-radius: 3;
-    -fx-alignment: center;
-    -fx-content-display: center;
     -fx-padding: 0 5 0 5;
     -fx-border-width: 2 2 2 2;
     -fx-border-color: #939695;

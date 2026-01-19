@@ -326,8 +326,11 @@ public class Field extends SettingsController {
      */
     public void openCell(Button eventbutton) throws NullPointerException {
 
-        gamewon();
+        if(CellsToOpened == 0) {
+            gamewon();
 
+            return;
+        }
 
         for (Node node : gamegrid.getChildren()) {
             if ((GridPane.getRowIndex(node).equals(GridPane.getRowIndex(eventbutton))) &&
@@ -407,7 +410,7 @@ public class Field extends SettingsController {
      * -> every button gets disabled
      */
     public void gamewon() {
-        if (CellsToOpened == 0) {
+
             overlay.toFront();
             timeline.stop();
             winnerLabel.setText("You Won - (" + getSeconds() + "s)");
@@ -423,7 +426,6 @@ public class Field extends SettingsController {
 
             }
 
-        }
     }
 
 
